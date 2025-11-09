@@ -7,19 +7,22 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
     data = request.json
-    # validation ...
+    if not UserModel.is_email_available(data["email"]):
+        return jsonify({"error": "Email already registered"}), 400
     user = UserModel.create_user(data)
-    return jsonify({'success': True}), 201
+    token = generate_token(user["user_id"])
+    return jsonify({"token": token}), 201
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
-    # check user, validate password, generate JWT...
-    token = generate_token(data['email'])
-    return jsonify({'token': token})
+    user = UserModel.verify_credentials(data["email"], data["password"])
+    if not user:
+        return jsonify({"error": "Invalid credentials"}), 401
+    token = generate_token(user["user_id"])
+    return jsonify({"token": token})
 
-@auth_bp.route('/user', methods=['GET'])
-def get_user():
-    token = request.headers.get('Authorization').split()[1]
-    user = verify_token(token)
-    return jsonify({'user': user})
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    # Stateless logout: frontend simply discards the JWT token
+    return jsonify({"message": "Logged out"})
