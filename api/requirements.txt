@@ -1,1 +1,4 @@
+Flask
+PyJWT
+# Vercel NeoDB Python client - add exact package name here
 
