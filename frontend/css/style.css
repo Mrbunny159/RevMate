@@ -1,0 +1,19 @@
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  color: #333333;
+  background: #fff;
+}
+.navbar, .btn, .card {
+  border-radius: 12px;
+}
+.btn,
+.navbar-brand {
+  font-weight: 700;
+}
+.btn-primary, .btn-warning, .btn-danger {
+  background-color: #FC5200;
+  border: none;
+}
+.card {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
